@@ -648,7 +648,11 @@ ERROR
   def create_database_yml
     instrument 'ruby.create_database_yml' do
       return false unless File.directory?("config")
-      return false if  bundler.has_gem?('activerecord') && bundler.gem_version('activerecord') >= Gem::Version.new('4.1.0.beta1')
+      return false if (
+        bundler.has_gem?('railties') &&
+        bundler.has_gem?('activerecord') &&
+        bundler.gem_version('activerecord') >= Gem::Version.new('4.1.0.beta1')
+      )
 
       log("create_database_yml") do
         topic("Writing config/database.yml to read from DATABASE_URL")
